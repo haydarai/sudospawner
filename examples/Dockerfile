@@ -20,7 +20,8 @@ RUN python3 -m pip install notebook
 
 # add the rhea user, who will run the server
 # she needs to be in the shadow group in order to access the PAM service
-RUN useradd -m -G shadow -p $(openssl passwd -1 rhea) rhea
+RUN groupadd jupyterhub
+RUN useradd -m -G shadow,jupyterhub -p $(openssl passwd -1 rhea) rhea
 
 # Give rhea passwordless sudo access to run the sudospawner mediator on behalf of users:
 ADD examples/sudoers /tmp/sudoers
@@ -28,7 +29,7 @@ RUN cat /tmp/sudoers >> /etc/sudoers
 RUN rm /tmp/sudoers
 
 # add some regular users
-RUN for name in io ganymede; do useradd -m -p $(openssl passwd -1 $name) $name; done
+RUN for name in io ganymede; do useradd -m -G jupyterhub -p $(openssl passwd -1 $name) $name; done
 
 # make home directories private
 RUN chmod o-rwx /home/*
