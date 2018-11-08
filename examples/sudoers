@@ -4,7 +4,9 @@ Runas_Alias JUPYTER_USERS = io, europa, ganymede, callisto, rhea
 # the command(s) jupyterhub can run on behalf of the above users without needing a password
 # this command handles the signalling of spawning servers
 Cmnd_Alias SPAWNER_CMD = /opt/conda/bin/sudospawner
+Cmnd_Alias PYTHON_CMD = /opt/conda/bin/python
 
 # actually give hub user permission to run the above command on behalf
 # of the above users without a password
 rhea ALL=(JUPYTER_USERS) NOPASSWD:SPAWNER_CMD
+rhea ALL=(JUPYTER_USERS) NOPASSWD:PYTHON_CMD
