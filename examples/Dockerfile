@@ -10,13 +10,13 @@ FROM jupyterhub/jupyterhub:0.8.0
 MAINTAINER Jupyter Project <jupyter@googlegroups.com>
 
 RUN apt-get -y update \
-    && apt-get -y install sudo \
+    && apt-get -y install sudo vim \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 # fix permissions on sudo executable (how did this get messed up?)
 RUN chmod 4755 /usr/bin/sudo
 
-RUN python3 -m pip install notebook
+RUN python3 -m pip install notebook jupyterhub-ldapauthenticator
 
 # add the rhea user, who will run the server
 # she needs to be in the shadow group in order to access the PAM service
@@ -29,7 +29,7 @@ RUN cat /tmp/sudoers >> /etc/sudoers
 RUN rm /tmp/sudoers
 
 # add some regular users
-RUN for name in io ganymede; do useradd -m -G jupyterhub -p $(openssl passwd -1 $name) $name; done
+RUN for name in io ganymede haydar; do useradd -m -G jupyterhub -p $(openssl passwd -1 $name) $name; done
 
 # make home directories private
 RUN chmod o-rwx /home/*
@@ -40,6 +40,7 @@ RUN python3 -m pip install .
 
 # make the working dir owned by rhea, so she can create the state database
 RUN chown rhea .
+RUN chmod +x get_all_ports.sh
 
 USER rhea
 ADD examples/jupyterhub_config.py ./jupyterhub_config.py

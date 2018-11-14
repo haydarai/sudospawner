@@ -1,0 +1,25 @@
+[
+    {
+        "base_url": "/user/io/",
+        "hostname": "127.0.0.1",
+        "notebook_dir": "/home/io",
+        "password": false,
+        "pid": 42,
+        "port": 33149,
+        "secure": false,
+        "token": "",
+        "url": "http://127.0.0.1:33149/user/io/"
+    },
+    {
+        "key": "2b3e6274-b03aed690f53785ab8b77591",
+        "stdin_port": 33457,
+        "shell_port": 44905,
+        "signature_scheme": "hmac-sha256",
+        "hb_port": 40799,
+        "transport": "tcp",
+        "control_port": 37321,
+        "iopub_port": 43347,
+        "ip": "127.0.0.1",
+        "kernel_name": ""
+    },
+]
