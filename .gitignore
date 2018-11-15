@@ -56,3 +56,8 @@ target/
 
 jupyterhub.sqlite
 jupyterhub_cookie_secret
+
+.settings/
+.vscode/
+tsconfig.json
+jsconfig.json
