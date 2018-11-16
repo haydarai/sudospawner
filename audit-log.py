@@ -51,8 +51,9 @@ def process_message(msg_list):
         filename = path.join(log_dir, fname)
         notnew = path.exists(filename)
         try:
-            print('makedir...', log_dir)
-            makedirs(log_dir)
+            if not path.isdir(log_dir):
+                print('makedir...', log_dir)
+                makedirs(log_dir)
             f = open(filename, 'a')
             print("Logging to", filename, "... ")
             if not notnew:
@@ -93,19 +94,22 @@ class AuditLog():
         self.auto_refresh()
 
     def read_ports(self):
-        subprocess.call("./get-all-ports.sh", shell=True)
-        with open('./ports.json') as json_data:
-            data = json.load(json_data)
-            for entry in data:
-                if 'iopub_port' in entry:
-                    p = entry['iopub_port']
-                    if p not in self.current_ports:
-                        self.current_ports.append(p)
-                        print('Connecting to ' +
-                            'tcp://127.0.0.1:{p}' + ' ...')
-                        process = Process(target=connect_socket, args=(p,))
-                        process.start()
-                        self.processes_by_port[p] = process
+        subprocess.call("./get_all_ports.sh", shell=True)
+        try:
+            with open('./ports.json') as json_data:
+                data = json.load(json_data)
+                for entry in data:
+                    if 'iopub_port' in entry:
+                        p = entry['iopub_port']
+                        if p not in self.current_ports:
+                            self.current_ports.append(p)
+                            print('Connecting to ' +
+                                'tcp://127.0.0.1:' + str(p) + ' ...')
+                            process = Process(target=connect_socket, args=(p,))
+                            process.start()
+                            self.processes_by_port[p] = process
+        except:
+            print("No port opened yet")
 
     def auto_refresh(self):
         Timer(0.5, self.auto_refresh).start()
