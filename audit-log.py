@@ -1,3 +1,4 @@
+# TODO: Fix errors like /home/<user> does not exist
 import asyncio
 import errno
 import json
@@ -12,7 +13,6 @@ from time import strftime
 from multiprocessing import Process
 from zmq.eventloop import ioloop, zmqstream
 ioloop.install()
-
 
 def split_idents_from_msg_list(msg_list):
     DELIM = b"<IDS|MSG>"
