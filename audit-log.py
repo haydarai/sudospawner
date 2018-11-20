@@ -36,7 +36,7 @@ def deserialize(msg_list):
     message['content'] = loads(msg_list[4].decode('utf-8'))
     return message
 
-
+# TODO: use username as folder name, e.g. log/kuring/<date>-<session>.py
 def process_message(msg_list):
     # Record an IOPub message arriving from a kernel
     # TODO: For some reason the kernel id is not published and session id is different
